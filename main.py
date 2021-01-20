@@ -10,7 +10,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-DEFAULT_LAYER_STRUCTURE = (784, 120, 10)
+LAYER_STRUCTURE = (784, 120, 10)
 
 
 def formulate_data(data):
@@ -30,8 +30,9 @@ def get_wb():
 
 
 def train(x, y):
-    nn = NeuralNetwork(*DEFAULT_LAYER_STRUCTURE)
+    nn = NeuralNetwork(*LAYER_STRUCTURE)
     nn.grad_descent(x, y, output=True, epochs=1200)
+    # comment the line below to stop updating the w_b.pickle everytime we train the model
     nn.save_data()
 
 
@@ -39,7 +40,7 @@ def test(x, y):
     print("Calculating accuracy...", end='')
     weights, biases = get_wb()
     accurate = 0
-    nn = NeuralNetwork(*DEFAULT_LAYER_STRUCTURE)
+    nn = NeuralNetwork(*LAYER_STRUCTURE)
     for i in range(x.shape[0]):
         pred_y = nn.predict(x[i], w=weights, b=biases)
         if pred_y == np.argmax(y[i, :]):
