@@ -14,7 +14,7 @@ class NeuralNetwork:
         self.a = [[] for _ in range(self.n_layers)]
         # sigmoid outputs of each layers
         self.z = [[] for _ in range(self.n_layers - 1)]
-        # gradients in weights and biases
+        # gradients in weights and biases+
         self.grad_w = [[] for _ in range(self.n_layers - 1)]
         self.grad_b = [[] for _ in range(self.n_layers - 1)]
         # we will set this value to the number of inputs in a batch, later

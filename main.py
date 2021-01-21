@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import pickle
 import warnings
+from read_image import read_file
 
 
 # to supress numpy overflow warnings
@@ -57,19 +58,7 @@ def predict(x):
 
 
 if __name__ == "__main__":
-    print("Preparing data...", end='')
-    # getting the training data and converting to numpy array
-    train_data = pd.read_csv(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "mnist_train.csv"),
-                             header=None, skiprows=0).to_numpy()
-    test_data = pd.read_csv(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "mnist_test.csv"),
-                            header=None, skiprows=0).to_numpy()
-    # shuffling the data
-    np.random.shuffle(train_data)
-    np.random.shuffle(test_data)
-    train_in, train_out = formulate_data(train_data)
-    test_in, test_out = formulate_data(test_data)
-    print("Done.")
-
+    # taking input from the user
     print("1. train the network")
     print("2. test the network")
     print("3. predict the digit")
@@ -78,16 +67,32 @@ if __name__ == "__main__":
     while True:
         try:
             prog_choice = int(input("Enter your choice: "))
-            if prog_choice < 1 or prog_choice > 3:
-                raise Exception("Please enter a number from 1 to 3. Try again.")
-        except ValueError:
+            assert (1 <= prog_choice <= 3)
+        except (ValueError, AssertionError):
             print("Please enter a number from 1 to 3. Try again.")
         else:
             break
 
+    # calling appropriate methods based on the user input
     if prog_choice == 1:
+        print("Preparing data...", end='')
+        # getting the training data and converting to numpy array
+        train_data = pd.read_csv(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "mnist_train.csv"),
+                                 header=None, skiprows=0).to_numpy()
+        # shuffling the data
+        np.random.shuffle(train_data)
+        train_in, train_out = formulate_data(train_data)
+        print("Done.")
         train(train_in / 255, train_out)
     elif prog_choice == 2:
+        print("Preparing data...", end='')
+        test_data = pd.read_csv(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "mnist_test.csv"),
+                                header=None, skiprows=0).to_numpy()
+        np.random.shuffle(test_data)
+        test_in, test_out = formulate_data(test_data)
+        print("Done.")
         test(test_in, test_out)
-    else:
-        print("Working on it...")
+    elif prog_choice == 3:
+        img = read_file(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "test_images",
+                                     "digit (5).jpg"))
+        predict(img)
