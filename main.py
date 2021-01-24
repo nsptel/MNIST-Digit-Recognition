@@ -4,7 +4,6 @@ import pandas as pd
 import os
 import pickle
 import warnings
-from read_image import read_file
 
 
 # to supress numpy overflow warnings
@@ -61,13 +60,12 @@ if __name__ == "__main__":
     # taking input from the user
     print("1. train the network")
     print("2. test the network")
-    print("3. predict the digit")
     prog_choice = -1
 
     while True:
         try:
             prog_choice = int(input("Enter your choice: "))
-            assert (1 <= prog_choice <= 3)
+            assert (1 <= prog_choice <= 2)
         except (ValueError, AssertionError):
             print("Please enter a number from 1 to 3. Try again.")
         else:
@@ -92,7 +90,3 @@ if __name__ == "__main__":
         test_in, test_out = formulate_data(test_data)
         print("Done.")
         test(test_in, test_out)
-    elif prog_choice == 3:
-        img = read_file(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "test_images",
-                                     "digit (5).jpg"))
-        predict(img)
